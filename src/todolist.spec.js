@@ -1,17 +1,39 @@
-test('Check addTodo able add todo to todoList', () => {
-  document.body.innerHTML = `
-    <input id="newTodo" />
-    <button id="addTodo">Add todo</button>
-    <ol id="todoList"></ol>
-  `;
-  require('./todolist.js');
+describe('Todo list', () => {
+  let newTodoInput;
+  let addTodoBtn;
+  let todolist;
 
-  const newTodoInput = document.getElementById('newTodo');
-  const addTodoBtn = document.getElementById('addTodo');
-  const todolist = document.getElementById('todoList');
+  beforeAll(() => {
+    document.body.innerHTML = `
+      <input id="newTodo" />
+      <button id="addTodo">Add todo</button>
+      <ol id="todoList"></ol>
+    `;
+    require('./todolist.js');
 
-  newTodoInput.value = 'New todolist!';
-  addTodoBtn.click();
+    newTodoInput = document.getElementById('newTodo');
+    addTodoBtn = document.getElementById('addTodo');
+    todolist = document.getElementById('todoList');
+  });
 
-  expect(todolist.innerHTML).toBe('<li>New todolist!</li>');
-});
+  afterEach(() => {
+    todolist.innerHTML = '';
+  })
+
+  test('Check addTodo able add todo to todoList', () => {
+    newTodoInput.value = 'New todolist!';
+    addTodoBtn.click();
+
+    expect(todolist.innerHTML).toBe('<li>New todolist!</li>');
+  });
+
+  test('Check whether an element exists', () => {
+    addTodoBtn.click();
+    expect(todolist.innerHTML).toBeFalsy();
+
+    newTodoInput.value = 'New todolist!';
+    addTodoBtn.click();
+
+    expect(todolist.innerHTML).toBe('<li>New todolist!</li>');
+  })
+})
